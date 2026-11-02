@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alfred's photo gallery.">
+    <title>Gallery | Alfred Angelo Besa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="page-transition.js" defer></script>
+    <script type="module" src="auth.js"></script>
+</head>
+
+<body class="portfolio-inner-page gallery-page">
+
+    <!-- BACKGROUND VIDEO -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="video3/racing3.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="video-overlay"></div>
+
+    <!-- NAVIGATION -->
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a class="logo" href="index.html">ALFRED<span>.</span></a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="skills.html">SKILLS</a></li>
+                <li><a href="goals.html">GOALS</a></li>
+                <li><a href="funfacts.html">FUN FACTS</a></li>
+                <li><a class="active" href="gallery.html">GALLERY</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+
+            <div class="user-controls">
+                <span id="userEmail">Loading account...</span>
+                <button id="logoutButton" type="button" aria-label="Log out of your account">LOG OUT ↗</button>
+            </div>
+
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- GALLERY INTRODUCTION -->
+        <section class="gallery-intro">
+            <span class="tag">MY PHOTOS</span>
+            <h1>THE <span>GALLERY</span></h1>
+            <p>Click any picture to open it.</p>
+        </section>
+
+        <!-- PHOTO GALLERY -->
+        <section class="photo-grid">
+
+            <!-- BOX 1 -->
+            <button class="photo-card" type="button">
+                <img src="hero/eva and i.jpg" alt="Photo 1">
+                <span class="photo-caption">
+                    <strong>My one and only</strong>
+                    <small>The person who encouraged me to make this website and the person that always choose me even when the weather is bad.</small>
+                </span>
+            </button>
+
+            <!-- BOX 2 -->
+            <button class="photo-card" type="button">
+                <img src="hero/h7.jpg" alt="Photo 2">
+                <span class="photo-caption">
+                    <strong>AVENTADOR SVJ</strong>
+                    <small>Lamborghini's V12 monster, built to chase lap records with raw, screaming power.</small>
+                </span>
+            </button>
+
+            <!-- BOX 3 -->
+            <button class="photo-card" type="button">
+                <img src="hero/h4.jpg" alt="Photo 3">
+                <span class="photo-caption">
+                    <strong>PORSCHE 911</strong>
+                    <small>The rear-engined icon that has stayed sharp, balanced, and daily-drivable for decades.</small>
+                </span>
+            </button>
+
+            <!-- BOX 4 -->
+            <button class="photo-card" type="button">
+                <img src="hero/h3.jpg" alt="Photo 4">
+                <span class="photo-caption">
+                    <strong>MCLAREN</strong>
+                    <small>Carbon-fiber precision from Woking, where every curve is shaped by speed.</small>
+                </span>
+            </button>
+
+            <!-- BOX 5 -->
+            <button class="photo-card" type="button">
+                <img src="hero/h6.jpg" alt="Photo 5">
+                <span class="photo-caption">
+                    <strong>LA FERRARI</strong>
+                    <small>Ferrari's hybrid hypercar flagship, which mixes a V12 with electric punch.</small>
+                </span>
+            </button>
+
+            <!-- BOX 6 -->
+            <button class="photo-card" type="button">
+                <img src="hero/h5.jpg" alt="Photo 6">
+                <span class="photo-caption">
+                    <strong>DRIFTING</strong>
+                    <small>The art of steering a car sideways through a corner, with smoke, angle, and control.</small>
+                </span>
+            </button>
+
+        </section>
+    </main>
+
+    <!-- PICTURE VIEWER -->
+    <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Picture viewer">
+        <div class="viewer-box">
+            <button class="viewer-close" id="viewerClose" type="button" aria-label="Close picture">&times;</button>
+            <img id="viewerImage" src="" alt="">
+            <div class="viewer-caption">
+                <strong id="viewerTitle"></strong>
+                <span id="viewerText"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 <span>Alfred Angelo Besa</span> | Gallery.</p>
+    </footer>
+
+    <!-- GALLERY JAVASCRIPT -->
+    <script>
+        (function () {
+            var viewer = document.getElementById("viewer");
+            var image = document.getElementById("viewerImage");
+            var title = document.getElementById("viewerTitle");
+            var text = document.getElementById("viewerText");
+            var closeBtn = document.getElementById("viewerClose");
+            var lastCard = null;
+
+            function open(card) {
+                var img = card.querySelector("img");
+
+                image.src = img.getAttribute("src");
+                image.alt = img.alt;
+
+                title.textContent = card.querySelector("strong").textContent;
+                text.textContent = card.querySelector("small").textContent;
+
+                lastCard = card;
+                viewer.classList.add("open");
+                closeBtn.focus();
+            }
+
+            function close() {
+                viewer.classList.remove("open");
+
+                if (lastCard) {
+                    lastCard.focus();
+                }
+            }
+
+            Array.prototype.forEach.call(
+                document.querySelectorAll(".photo-card"),
+                function (card) {
+                    card.addEventListener("click", function () {
+                        open(card);
+                    });
+                }
+            );
+
+            closeBtn.addEventListener("click", close);
+
+            viewer.addEventListener("click", function (e) {
+                if (e.target === viewer) {
+                    close();
+                }
+            });
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && viewer.classList.contains("open")) {
+                    close();
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>

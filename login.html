@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Alfred Angelo Besa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- SAME FONTS AS THE HOME PAGE -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login_style.css">
+    <script type="module" src="auth.js"></script>
+
+    <style>
+        /* ===== LOGOUT THANK-YOU SCREEN ===== */
+
+        .logout-thank-you {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #080808;
+            color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .logout-thank-you.show {
+            display: flex;
+            animation: thankFade 0.5s ease;
+        }
+
+        .thank-you-box {
+            width: 100%;
+            max-width: 550px;
+            padding: 45px 25px;
+            background: #141414;
+            border: 1px solid #e10600;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(225, 6, 0, 0.25);
+            pointer-events: none;
+        }
+
+        .thank-you-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .thank-you-box h1 {
+            color: #e10600;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(30px, 6vw, 48px);
+            margin: 0 0 20px;
+        }
+
+        .thank-you-box p {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            line-height: 1.5;
+        }
+
+        .thank-you-box span {
+            display: block;
+            color: #aaaaaa;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 17px;
+            margin-top: 12px;
+        }
+
+        .thank-you-line {
+            width: 100px;
+            height: 3px;
+            background: #e10600;
+            margin: 25px auto;
+            box-shadow: 0 0 12px rgba(225, 6, 0, 0.7);
+        }
+
+        .thank-you-box small {
+            color: #e10600;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        @keyframes thankFade {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .thank-you-box {
+                padding: 35px 18px;
+            }
+
+            .thank-you-box p {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- AUTOMOTIVE VIDEO BACKGROUND -->
+
+    <div class="video-background" aria-hidden="true">
+        <video id="backgroundVideo" autoplay muted playsinline preload="auto">
+            <source src="video1/lambo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="video-overlay" aria-hidden="true"></div>
+
+
+    <!-- LOGIN AND SIGN-UP CARD -->
+
+    <main class="login-wrapper">
+        <section class="login-card">
+
+            <h1 id="formTitle">LOGIN</h1>
+
+            <!-- LOGIN FORM -->
+
+            <form id="loginForm">
+                <input
+                    type="email"
+                    id="loginEmail"
+                    autocomplete="email"
+                    placeholder="Gmail / Email Address"
+                    aria-label="Gmail or email address"
+                    required
+                >
+
+                <div class="password-group">
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        autocomplete="current-password"
+                        placeholder="Password"
+                        aria-label="Password"
+                        required
+                    >
+
+                    <label class="show-password">
+                        <input
+                            type="checkbox"
+                            class="password-toggle"
+                            data-target="loginPassword"
+                        >
+                        <span>Show Password</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-button">
+                    LOG IN
+                </button>
+            </form>
+
+
+            <!-- CREATE ACCOUNT FORM -->
+
+            <form id="signupForm" style="display: none;">
+                <input
+                    type="text"
+                    id="signupName"
+                    autocomplete="name"
+                    maxlength="80"
+                    placeholder="Full Name"
+                    aria-label="Full name"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="signupEmail"
+                    autocomplete="email"
+                    placeholder="Gmail / Email Address"
+                    aria-label="Gmail or email address"
+                    required
+                >
+
+                <div class="password-group">
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Password (at least 6 characters)"
+                        aria-label="Create password"
+                        required
+                    >
+
+                    <label class="show-password">
+                        <input
+                            type="checkbox"
+                            class="password-toggle"
+                            data-target="signupPassword"
+                        >
+                        <span>Show Password</span>
+                    </label>
+                </div>
+
+                <div class="password-group">
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Confirm Password"
+                        aria-label="Confirm password"
+                        required
+                    >
+
+                    <label class="show-password">
+                        <input
+                            type="checkbox"
+                            class="password-toggle"
+                            data-target="confirmPassword"
+                        >
+                        <span>Show Password</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-button">
+                    CREATE ACCOUNT
+                </button>
+            </form>
+
+
+            <!-- AUTHENTICATION MESSAGE -->
+
+            <p
+                id="authMessage"
+                class="auth-message"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+
+            <!-- SWITCH LOGIN / SIGN-UP -->
+
+            <p id="toggleText" class="toggle-text">
+                Don't have an account?
+            </p>
+
+            <button
+                type="button"
+                id="toggleButton"
+                class="toggle-button"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </section>
+    </main>
+
+
+    <!-- THANK-YOU SCREEN AFTER LOGOUT -->
+
+    <div
+        id="logoutThankYou"
+        class="logout-thank-you"
+        role="button"
+        tabindex="0"
+        aria-label="Tap to close the thank-you screen and continue to login"
+    >
+        <div class="thank-you-box">
+
+            <div class="thank-you-icon">🏁</div>
+
+            <h1>THANK YOU!</h1>
+
+            <p>THANK YOU FOR USING MY WEBSITE</p>
+
+            <span>
+                We hope you enjoyed the automotive experience.
+            </span>
+
+            <div class="thank-you-line"></div>
+
+            <small>TAP ANYWHERE TO CONTINUE</small>
+
+        </div>
+    </div>
+
+
+    <script>
+        /* ===== SHOW / HIDE PASSWORD ===== */
+
+        document.querySelectorAll(".password-toggle").forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+                const passwordInput = document.getElementById(
+                    this.dataset.target
+                );
+
+                if (passwordInput) {
+                    passwordInput.type = this.checked ? "text" : "password";
+                }
+            });
+        });
+
+
+        /* ===== CONTINUOUS CAR VIDEO BACKGROUND ===== */
+
+        const backgroundVideo = document.getElementById("backgroundVideo");
+
+        const backgroundVideos = [
+            "video1/lambo.mp4",
+            "video1/porsche.mp4",
+            "video1/Toyota MR2-spyder.mp4",
+            "video1/evo3-gsr.mp4",
+            "video1/viper.mp4",
+            "video1/supra.mp4"
+        ];
+
+        let currentVideo = 0;
+
+        backgroundVideo.muted = true;
+        backgroundVideo.loop = false;
+
+        backgroundVideo.addEventListener("ended", function () {
+            currentVideo = (currentVideo + 1) % backgroundVideos.length;
+
+            backgroundVideo.src = backgroundVideos[currentVideo];
+            backgroundVideo.load();
+
+            backgroundVideo.play().catch(function (error) {
+                console.log("Video playback failed:", error);
+            });
+        });
+
+        backgroundVideo.addEventListener("error", function () {
+            console.log(
+                "Unable to load video:",
+                backgroundVideos[currentVideo]
+            );
+        });
+
+        backgroundVideo.play().catch(function (error) {
+            console.log("Video autoplay was blocked:", error);
+        });
+
+
+        /* ===== SHOW THANK-YOU SCREEN AFTER LOGOUT ===== */
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const shouldShowThankYou =
+                sessionStorage.getItem("showLogoutThankYou") === "true";
+
+            if (!shouldShowThankYou) return;
+
+            // Clear the flag so it does not appear again on refresh.
+            sessionStorage.removeItem("showLogoutThankYou");
+
+            const thankYou = document.getElementById("logoutThankYou");
+
+            if (!thankYou) return;
+
+            // Display the thank-you screen.
+            thankYou.classList.add("show");
+
+            // Close only when the user taps or clicks anywhere.
+            function closeThankYou() {
+                thankYou.classList.remove("show");
+
+                thankYou.removeEventListener("click", closeThankYou);
+                thankYou.removeEventListener("keydown", handleKeydown);
+            }
+
+            // Allow mouse clicks and screen taps.
+            thankYou.addEventListener("click", closeThankYou);
+
+            // Also allow Enter or Space on a keyboard.
+            function handleKeydown(event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    closeThankYou();
+                }
+            }
+
+            thankYou.addEventListener("keydown", handleKeydown);
+        });
+    </script>
+
+</body>
+</html>

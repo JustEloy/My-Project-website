@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore Alfred's developing web, design, programming, and communication skills.">
+
+    <title>My Skills | Alfred Angelo Besa</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="page-transition.js" defer></script>
+    <script type="module" src="auth.js"></script>
+</head>
+
+<body class="skills-page">
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="skills-video-container">
+        <video class="skills-background-video"
+               autoplay
+               muted
+               loop
+               playsinline>
+            <source src="video3/racing3.mp4" type="video/mp4">
+            Your browser does not support background video.
+        </video>
+
+        <div class="skills-video-overlay"></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <header class="site-header skills-header">
+        <nav class="navbar">
+            <a class="logo" href="index.html">ALFRED<span>.</span></a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="funfacts.html">Fun Facts</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="user-controls">
+                <span id="userEmail">Loading account...</span>
+                <button id="logoutButton" type="button"
+                        aria-label="Log out of your account">
+                    LOG OUT ↗
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="skills-content">
+
+        <!-- HERO SECTION -->
+        <section class="skills-hero">
+            <div class="skills-hero-content">
+
+                <span class="skills-eyebrow">
+                    <span class="status-dot"></span>
+                    DRIVER PROFILE // 001
+                </span>
+
+                <h1>
+                    MY SKILLS.<br>
+                    <span>MY JOURNEY.</span>
+                </h1>
+
+                <p class="skills-hero-description">
+                    Every expert starts somewhere. I'm developing my skills,
+                    learning new techniques, and improving with every project.
+                </p>
+
+                <a href="#my-skills" class="skills-hero-button">
+                    EXPLORE MY SKILLS
+                    <span>↘</span>
+                </a>
+
+                <div class="skills-hero-footer">
+                    <span>ALFRED ANGELO BESA</span>
+                    <span>LEARNING IN PROGRESS</span>
+                </div>
+            </div>
+
+            <div class="hero-side-label">
+                PERFORMANCE / DEVELOPMENT
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section class="skills-section" id="my-skills">
+
+            <div class="skills-section-heading">
+                <div>
+                    <span class="skills-section-label">01 / MY ABILITIES</span>
+                    <h2>SKILL <span>GARAGE</span></h2>
+                </div>
+
+                <p>
+                    Skills I'm building, one line of code
+                    and one challenge at a time.
+                </p>
+            </div>
+
+            <div class="skills-grid">
+
+                <!-- HTML & CSS -->
+                <article class="skill-card">
+                    <div class="skill-card-top">
+                        <span class="skill-number">01</span>
+                        <span class="skill-icon">&lt;/&gt;</span>
+                    </div>
+
+                    <span class="skill-category">WEB DEVELOPMENT</span>
+                    <h3>HTML & CSS</h3>
+
+                    <p>
+                        Building structured web pages, responsive layouts,
+                        and automotive-inspired designs.
+                    </p>
+
+                    <div class="skill-progress-info">
+                        <span>DEVELOPMENT</span>
+                        <span>75%</span>
+                    </div>
+
+                    <div class="skill-progress">
+                        <span style="--skill-level: 75%"></span>
+                    </div>
+
+                    <div class="skill-card-bottom">
+                        <span>STATUS: LEARNING</span>
+                        <span>HTML / CSS</span>
+                    </div>
+                </article>
+
+                <!-- GRAPHIC DESIGN -->
+                <article class="skill-card">
+                    <div class="skill-card-top">
+                        <span class="skill-number">02</span>
+                        <span class="skill-icon">✳</span>
+                    </div>
+
+                    <span class="skill-category">CREATIVE DESIGN</span>
+                    <h3>GRAPHIC DESIGN</h3>
+
+                    <p>
+                        Exploring visual identity, color combinations,
+                        logos, and creative brand layouts.
+                    </p>
+
+                    <div class="skill-progress-info">
+                        <span>DEVELOPMENT</span>
+                        <span>60%</span>
+                    </div>
+
+                    <div class="skill-progress">
+                        <span style="--skill-level: 60%"></span>
+                    </div>
+
+                    <div class="skill-card-bottom">
+                        <span>STATUS: LEARNING</span>
+                        <span>DESIGN</span>
+                    </div>
+                </article>
+
+                <!-- JAVASCRIPT -->
+                <article class="skill-card">
+                    <div class="skill-card-top">
+                        <span class="skill-number">03</span>
+                        <span class="skill-icon">{ }</span>
+                    </div>
+
+                    <span class="skill-category">PROGRAMMING</span>
+                    <h3>JAVASCRIPT</h3>
+
+                    <p>
+                        Learning interactive features, form handling,
+                        and dynamic website behavior.
+                    </p>
+
+                    <div class="skill-progress-info">
+                        <span>DEVELOPMENT</span>
+                        <span>45%</span>
+                    </div>
+
+                    <div class="skill-progress">
+                        <span style="--skill-level: 45%"></span>
+                    </div>
+
+                    <div class="skill-card-bottom">
+                        <span>STATUS: LEARNING</span>
+                        <span>JS</span>
+                    </div>
+                </article>
+
+                <!-- COMMUNICATION -->
+                <article class="skill-card">
+                    <div class="skill-card-top">
+                        <span class="skill-number">04</span>
+                        <span class="skill-icon">↗</span>
+                    </div>
+
+                    <span class="skill-category">PERSONAL DEVELOPMENT</span>
+                    <h3>COMMUNICATION</h3>
+
+                    <p>
+                        Improving how I share ideas, collaborate with
+                        others, and explain my work.
+                    </p>
+
+                    <div class="skill-progress-info">
+                        <span>DEVELOPMENT</span>
+                        <span>70%</span>
+                    </div>
+
+                    <div class="skill-progress">
+                        <span style="--skill-level: 70%"></span>
+                    </div>
+
+                    <div class="skill-card-bottom">
+                        <span>STATUS: IMPROVING</span>
+                        <span>TEAMWORK</span>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- BOTTOM MESSAGE -->
+            <div class="skills-motivation">
+                <div class="motivation-line"></div>
+
+                <div>
+                    <span class="skills-section-label">02 / THE MINDSET</span>
+                    <h2>NEVER STOP <span>IMPROVING.</span></h2>
+
+                    <p>
+                        Progress takes patience. Every new skill is another
+                        step toward becoming the person I want to be.
+                    </p>
+                </div>
+
+                <div class="motivation-symbol">+</div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="skills-footer">
+        <p>© 2026 <span>ALFRED ANGELO BESA</span></p>
+        <p>PERSONAL PORTFOLIO / SKILLS & DEVELOPMENT</p>
+    </footer>
+
+</body>
+</html>

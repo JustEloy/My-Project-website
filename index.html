@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alfred Automotive — a personal portfolio inspired by sports cars and performance design.">
+
+    <title>ALFRED | Automotive Experience</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- WEBSITE SCRIPTS -->
+    <script src="page-transition.js" defer></script>
+    <script src="script.js" defer></script>
+    <script type="module" src="auth.js"></script>
+    <script src="profile-preview.js" defer></script>
+    <script src="avatar-fixed.js" defer></script>
+    <script type="module" src="analytics.js"></script>
+</head>
+
+<body>
+
+    <!-- ======================================
+         WELCOME SCREEN
+    ======================================= -->
+    <section class="welcome-screen"
+             id="welcomeScreen"
+             aria-label="Welcome to Alfred Automotive">
+
+        <video class="welcome-video"
+               autoplay muted loop playsinline
+               aria-hidden="true">
+            <source src="video2/racing1.mp4" type="video/mp4">
+        </video>
+
+        <div class="welcome-overlay"></div>
+        <div class="welcome-grid" aria-hidden="true"></div>
+
+        <div class="welcome-corner welcome-corner-left">
+            A.B. // AUTOMOTIVE
+        </div>
+
+        <div class="welcome-corner welcome-corner-right">
+            PERFORMANCE DIVISION
+        </div>
+
+        <div class="welcome-content">
+
+            <p class="welcome-tag">
+                <span class="welcome-live-dot"></span>
+                ALFRED AUTOMOTIVE <span>// 001</span>
+            </p>
+
+            <p class="welcome-eyebrow">
+                IGNITION SEQUENCE READY
+            </p>
+
+            <h1 class="welcome-title">
+                WELCOME TO
+                <span>MY WEBSITE</span>
+            </h1>
+
+            <div class="welcome-line">
+                <span></span>
+            </div>
+
+            <p class="welcome-subtitle">
+                ALFRED ANGELO BESA
+            </p>
+
+            <p class="welcome-description">
+                PERFORMANCE. PRECISION. PASSION.
+            </p>
+
+            <button class="welcome-button"
+                    id="enterWebsite"
+                    type="button">
+
+                <span class="wheel-icon" aria-hidden="true">
+                    <span class="wheel-spoke wheel-spoke-top"></span>
+                    <span class="wheel-spoke wheel-spoke-left"></span>
+                    <span class="wheel-spoke wheel-spoke-right"></span>
+                    <span class="wheel-hub"></span>
+                </span>
+
+                <span class="enter-label">START YOUR DRIVE</span>
+                <span class="enter-arrow" aria-hidden="true">↗</span>
+
+            </button>
+
+            <p class="welcome-footer">
+                <span>01</span>
+                YOUR JOURNEY STARTS HERE
+                <span>///</span>
+            </p>
+
+        </div>
+
+        <div class="welcome-number">
+            WELCOME SCREEN / 001
+        </div>
+
+        <div class="speed-line speed-line-one" aria-hidden="true"></div>
+        <div class="speed-line speed-line-two" aria-hidden="true"></div>
+        <div class="speed-line speed-line-three" aria-hidden="true"></div>
+
+    </section>
+
+
+    <!-- ======================================
+         MAIN NAVIGATION
+    ======================================= -->
+    <header class="site-header">
+
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a class="logo" href="index.html">
+                ALFRED<span>.</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a class="active" href="index.html">HOME</a></li>
+                <li><a href="skills.html">SKILLS</a></li>
+                <li><a href="goals.html">GOALS</a></li>
+                <li><a href="funfacts.html">FUN FACTS</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+
+            <div class="user-controls">
+
+                <!-- PROFILE AVATAR -->
+                <button
+                    class="profile-avatar"
+                    id="profileAvatar"
+                    type="button"
+                    aria-label="Show profile picture"
+                    aria-expanded="false">
+
+                    <img
+                        src="hero/hi2.jpg"
+                        alt="Profile picture"
+                        id="profileAvatarImage">
+
+                </button>
+
+                <span id="userEmail" title="Signed-in account">
+                    Loading account...
+                </span>
+
+                <button
+                    id="logoutButton"
+                    type="button"
+                    aria-label="Log out of your account">
+
+                    LOG OUT ↗
+
+                </button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ======================================
+         HERO SECTION
+    ======================================= -->
+    <main>
+
+        <section class="hero" id="home">
+
+            <video
+                id="heroVideo"
+                class="hero-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                aria-hidden="true">
+
+                <source src="video2/racing1.mp4" type="video/mp4">
+
+            </video>
+
+            <div class="hero-shade"></div>
+            <div class="hero-scanline"></div>
+
+            <div class="hero-content">
+
+                <p class="tag hero-tag">
+                    ALFRED AUTOMOTIVE / 001
+                </p>
+
+                <p class="hero-eyebrow">
+                    BUILT FOR THE DRIVE
+                </p>
+
+                <h1 class="hero-name">
+                    ALFRED
+                    <span>ANGELO BESA</span>
+                </h1>
+
+                <div class="hero-divider"></div>
+
+                <p class="hero-description">
+                    PERFORMANCE. PRECISION. PASSION.
+                    <br>
+                    A personal world inspired by iconic sports cars,
+                    automotive culture, and the thrill of speed.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a class="btn" href="gallery.html">
+                        EXPLORE THE GARAGE ↗
+                    </a>
+
+                    <a class="btn btn-outline" href="skills.html">
+                        MY JOURNEY
+                    </a>
+
+                </div>
+
+                <div class="hero-status">
+                    <span class="status-dot"></span>
+                    <span>LIVE SHOWCASE</span>
+                    <span class="status-line"></span>
+                    <span id="heroCounter">01 / 05</span>
+                </div>
+
+            </div>
+
+            <div class="hero-corner hero-corner-left">
+                A.B. // AUTOMOTIVE
+            </div>
+
+            <div class="hero-corner hero-corner-right">
+                DRIVEN BY PASSION
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             PORTFOLIO OVERVIEW
+        ======================================= -->
+        <section class="section" id="overview">
+
+            <p class="tag">
+                SYSTEM OVERVIEW // 002
+            </p>
+
+            <h2 class="section-title">
+                WELCOME TO MY <span>WORLD</span>
+            </h2>
+
+            <p class="section-intro">
+                This website showcases my interests, skills, student goals,
+                fun facts, and favorite automotive designs. Inspired by
+                legendary sports cars, performance engineering, and
+                futuristic digital interfaces.
+            </p>
+
+            <div class="grid">
+
+                <article class="card">
+                    <p class="tag">MODULE 01</p>
+                    <h3>MY SKILLS</h3>
+                    <p>
+                        Discover the skills I am developing as a student,
+                        including my technical abilities and creativity.
+                    </p>
+                    <a class="btn" href="skills.html">ACCESS SKILLS ↗</a>
+                </article>
+
+                <article class="card">
+                    <p class="tag">MODULE 02</p>
+                    <h3>MY GOALS</h3>
+                    <p>
+                        Explore my ambitions, learning journey, and future
+                        plans as I continue improving.
+                    </p>
+                    <a class="btn" href="goals.html">VIEW GOALS ↗</a>
+                </article>
+
+                <article class="card">
+                    <p class="tag">MODULE 03</p>
+                    <h3>MY GALLERY</h3>
+                    <p>
+                        Explore sports-car photography, performance-inspired
+                        designs, and the vehicles that motivate me.
+                    </p>
+                    <a class="btn" href="gallery.html">VIEW GALLERY ↗</a>
+                </article>
+
+                <article class="card">
+                    <p class="tag">MODULE 04</p>
+                    <h3>FUN FACTS</h3>
+                    <p>
+                        Learn more about my interests, creativity,
+                        and personal journey.
+                    </p>
+                    <a class="btn" href="funfacts.html">DISCOVER MORE ↗</a>
+                </article>
+
+                <article class="card">
+                    <p class="tag">MODULE 05</p>
+                    <h3>CONTACT</h3>
+                    <p>
+                        Visit my contact page to find the available ways
+                        to reach me.
+                    </p>
+                    <a class="btn" href="contact.html">GET IN TOUCH ↗</a>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================
+         PROFILE PICTURE PREVIEW
+    ======================================= -->
+    <aside
+        class="profile-preview"
+        id="profilePreview"
+        aria-label="Profile picture preview"
+        hidden>
+
+        <button
+            class="profile-preview-close"
+            id="closeProfilePreview"
+            type="button"
+            aria-label="Close profile picture">
+
+            &times;
+
+        </button>
+
+        <img
+            src="images/profile.jpg"
+            alt="Larger profile picture"
+            id="profilePreviewImage">
+
+        <p>ALFRED / PROFILE</p>
+
+        <button
+            class="profile-change-button"
+            id="changeProfilePhoto"
+            type="button">
+
+            CHANGE AVATAR
+
+        </button>
+
+        <input
+            type="file"
+            id="profilePhotoInput"
+            accept="image/*"
+            hidden>
+
+    </aside>
+
+
+    <!-- ======================================
+         FOOTER
+    ======================================= -->
+    <footer>
+
+        <p class="tag">
+            END OF TRANSMISSION
+        </p>
+
+        <p>
+            © 2026 <span>Alfred Angelo Besa</span>
+            | ENGINEERED WITH PASSION.
+        </p>
+
+    </footer>
+
+
+    <!-- ======================================
+         LOGOUT THANK-YOU SCREEN
+    ======================================= -->
+    <div
+        id="logoutThankYou"
+        class="logout-thank-you"
+        role="status"
+        aria-live="polite">
+
+        <div class="thank-you-box">
+
+            <div class="thank-you-icon">🏁</div>
+
+            <h2>THANK YOU!</h2>
+
+            <p>THANK YOU FOR USING MY WEBSITE</p>
+
+            <span>
+                We hope you enjoyed the automotive experience.
+            </span>
+
+            <div class="thank-you-line"></div>
+
+            <p class="redirect-text">
+                Redirecting to login...
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
