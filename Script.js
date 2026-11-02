@@ -18,6 +18,10 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
 
 /* ==========================================
    CAR DATA
@@ -192,6 +196,47 @@ function showWelcomeScreen() {
         video.muted = true;
         video.play().catch(() => {});
     }
+}
+
+
+/* ==========================================
+   WAIT FOR FIREBASE AUTHENTICATION
+========================================== */
+
+function waitForAuthenticatedUser() {
+
+    return new Promise((resolve, reject) => {
+
+        let unsubscribe = () => {};
+
+        unsubscribe = onAuthStateChanged(
+            auth,
+
+            (user) => {
+
+                unsubscribe();
+
+                if (!user) {
+                    reject(
+                        new Error(
+                            "Please log in before sending a message."
+                        )
+                    );
+                    return;
+                }
+
+                resolve(user);
+            },
+
+            (error) => {
+
+                unsubscribe();
+                reject(error);
+
+            }
+        );
+
+    });
 }
 
 
@@ -942,6 +987,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ==========================================
    CONTACT FORM + FIRESTORE DATABASE
+   AUTHENTICATED USER VERSION
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -951,7 +997,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!contactForm || !contactMessage) return;
 
-    const submitButton = contactForm.querySelector('[type="submit"]');
+    const submitButton =
+        contactForm.querySelector('[type="submit"]');
 
     contactForm.addEventListener("submit", async (event) => {
 
@@ -962,10 +1009,23 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const subject = document.getElementById("subject").value.trim();
-        const message = document.getElementById("message").value.trim();
+
+        /* GET FORM VALUES */
+
+        const name =
+            document.getElementById("name")?.value.trim() || "";
+
+        const email =
+            document.getElementById("email")?.value.trim() || "";
+
+        const subject =
+            document.getElementById("subject")?.value.trim() || "";
+
+        const message =
+            document.getElementById("message")?.value.trim() || "";
+
+
+        /* INPUT VALIDATION */
 
         if (!name || !email || !subject || !message) {
 
@@ -977,23 +1037,85 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "SENDING MESSAGE...";
+        if (name.length < 2 || name.length > 100) {
+
+            contactMessage.textContent =
+                "Name must contain 2 to 100 characters.";
+
+            contactMessage.style.color = "#ff7777";
+
+            return;
         }
 
-        contactMessage.textContent = "Sending your message...";
+        if (email.length > 254) {
+
+            contactMessage.textContent =
+                "Your email address is too long.";
+
+            contactMessage.style.color = "#ff7777";
+
+            return;
+        }
+
+        if (subject.length < 3 || subject.length > 100) {
+
+            contactMessage.textContent =
+                "Subject must contain 3 to 100 characters.";
+
+            contactMessage.style.color = "#ff7777";
+
+            return;
+        }
+
+        if (message.length < 10 || message.length > 2000) {
+
+            contactMessage.textContent =
+                "Message must contain 10 to 2000 characters.";
+
+            contactMessage.style.color = "#ff7777";
+
+            return;
+        }
+
+
+        /* DISABLE SUBMIT BUTTON */
+
+        if (submitButton) {
+
+            submitButton.disabled = true;
+            submitButton.textContent = "SENDING MESSAGE...";
+
+        }
+
+        contactMessage.textContent =
+            "Checking your account...";
+
         contactMessage.style.color = "#00eaff";
+
 
         try {
 
-            // Get the currently logged-in Firebase user
-            const currentUser = auth.currentUser;
+            /* WAIT FOR FIREBASE AUTHENTICATION */
 
-            // Save the message to Firestore
+            const currentUser = await waitForAuthenticatedUser();
+
+            if (!currentUser || !currentUser.uid) {
+
+                throw new Error(
+                    "Your account could not be verified. Please log in again."
+                );
+
+            }
+
+
+            /* SAVE MESSAGE TO FIRESTORE */
+
+            contactMessage.textContent =
+                "Sending your message...";
+
             await addDoc(collection(db, "messages"), {
 
-                userId: currentUser ? currentUser.uid : null,
+                userId: currentUser.uid,
 
                 name: name,
                 email: email,
@@ -1006,6 +1128,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             });
 
+
+            /* SUCCESS MESSAGE */
+
             contactMessage.textContent =
                 "MESSAGE SENT SUCCESSFULLY! Thank you for contacting ALFRED.";
 
@@ -1013,20 +1138,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
             contactForm.reset();
 
+            console.log(
+                "ALFRED: Contact message successfully saved.",
+                currentUser.uid
+            );
+
+
         } catch (error) {
 
-            console.error("Contact form error:", error);
+            /* ERROR HANDLING */
 
-            contactMessage.textContent =
-                "FAILED TO SEND: " + error.message;
+            console.error(
+                "ALFRED Contact Form Error:",
+                error
+            );
+
+            if (error.code === "permission-denied") {
+
+                contactMessage.textContent =
+                    "Permission denied. Please check your Firestore security rules.";
+
+            } else {
+
+                contactMessage.textContent =
+                    "FAILED TO SEND: " + error.message;
+
+            }
 
             contactMessage.style.color = "#ff7777";
 
+
         } finally {
 
+            /* RESTORE BUTTON */
+
             if (submitButton) {
+
                 submitButton.disabled = false;
                 submitButton.textContent = "SEND MESSAGE";
+
             }
 
         }
