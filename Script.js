@@ -1,13 +1,8 @@
 
 /* ==========================================
    ALFRED AUTOMOTIVE
-   COMPLETE COMBINED MAIN JAVASCRIPT
-   FIREBASE CONTACT FORM INTEGRATED
-========================================== */
-
-
-/* ==========================================
-   FIREBASE IMPORTS
+   COMBINED MAIN JAVASCRIPT
+   Firebase + Original Website Features
 ========================================== */
 
 import { db, auth } from "./firebase-config.js";
@@ -24,7 +19,7 @@ import {
 
 
 /* ==========================================
-   CAR DATA
+   1. CAR DATA
 ========================================== */
 
 const carData = {
@@ -35,10 +30,11 @@ const carData = {
         power: "580 HP",
         zeroToHundred: "3.1 s",
         drivetrain: "AWD",
-        fuel: "92%",
-        condition: "Excellent",
-        topSpeed: 330
+        condition: "92%",
+        conditionText: "Excellent",
+        speed: "330"
     },
+
     "2": {
         name: "Alfred Storm GT",
         status: "Reserved",
@@ -46,10 +42,11 @@ const carData = {
         power: "620 HP",
         zeroToHundred: "3.3 s",
         drivetrain: "RWD",
-        fuel: "78%",
-        condition: "Very Good",
-        topSpeed: 318
+        condition: "78%",
+        conditionText: "Very Good",
+        speed: "318"
     },
+
     "3": {
         name: "Alfred Phantom X",
         status: "Available",
@@ -57,10 +54,11 @@ const carData = {
         power: "640 HP",
         zeroToHundred: "3.4 s",
         drivetrain: "AWD",
-        fuel: "85%",
-        condition: "Excellent",
-        topSpeed: 305
+        condition: "85%",
+        conditionText: "Excellent",
+        speed: "305"
     },
+
     "4": {
         name: "Alfred Blaze S",
         status: "In Service",
@@ -68,10 +66,11 @@ const carData = {
         power: "350 HP",
         zeroToHundred: "4.2 s",
         drivetrain: "FWD",
-        fuel: "64%",
-        condition: "Good",
-        topSpeed: 292
+        condition: "64%",
+        conditionText: "Good",
+        speed: "292"
     },
+
     "5": {
         name: "Alfred Titan RS",
         status: "Available",
@@ -79,10 +78,11 @@ const carData = {
         power: "480 HP",
         zeroToHundred: "3.8 s",
         drivetrain: "AWD",
-        fuel: "90%",
-        condition: "Excellent",
-        topSpeed: 278
+        condition: "90%",
+        conditionText: "Excellent",
+        speed: "278"
     },
+
     "6": {
         name: "Alfred Nova Sprint",
         status: "Reserved",
@@ -90,19 +90,18 @@ const carData = {
         power: "300 HP",
         zeroToHundred: "4.8 s",
         drivetrain: "RWD",
-        fuel: "71%",
-        condition: "Very Good",
-        topSpeed: 261
+        condition: "71%",
+        conditionText: "Very Good",
+        speed: "261"
     }
 };
 
 
 /* ==========================================
-   LOGIN / SIGN-UP FORM SWITCHING
+   2. AUTHENTICATION FORM HELPERS
 ========================================== */
 
 function showAuthForm(type) {
-
     const login = document.getElementById("loginForm");
     const signup = document.getElementById("signupForm");
     const message = document.getElementById("authMessage");
@@ -112,227 +111,203 @@ function showAuthForm(type) {
     login.style.display = type === "login" ? "block" : "none";
     signup.style.display = type === "signup" ? "block" : "none";
 
-    if (message) message.textContent = "";
-}
-
-
-/* DEMO LOGIN */
-
-function demoLogin(event) {
-
-    if (event) event.preventDefault();
-
-    const form = document.getElementById("loginForm");
-    const message = document.getElementById("authMessage");
-
-    if (form && !form.reportValidity()) return;
-
     if (message) {
-        message.textContent =
-            "Demo only: connect a secure authentication backend to sign in.";
+        message.textContent = "";
     }
 }
 
+window.showAuthForm = showAuthForm;
 
-/* DEMO SIGN-UP */
 
-function demoSignup(event) {
-
+/* Demo login function for pages that still use it */
+function demoLogin(event) {
     if (event) event.preventDefault();
 
-    const password = document.getElementById("signupPassword");
-    const confirm = document.getElementById("confirmPassword");
-    const message = document.getElementById("authMessage");
-
-    if (!password || !confirm || !message) return;
-
-    if (password.value.length < 8) {
-        message.textContent =
-            "Please use a password with at least 8 characters.";
-        return;
-    }
-
-    if (password.value !== confirm.value) {
-        message.textContent = "Passwords do not match.";
-        return;
-    }
-
-    message.textContent =
-        "Demo only: connect a secure backend to create an account.";
+    console.warn(
+        "Demo login is disabled. Use Firebase Authentication instead."
+    );
 }
+
+window.demoLogin = demoLogin;
+
+
+/* Demo signup function for pages that still use it */
+function demoSignup(event) {
+    if (event) event.preventDefault();
+
+    console.warn(
+        "Demo signup is disabled. Use Firebase Authentication instead."
+    );
+}
+
+window.demoSignup = demoSignup;
 
 
 /* ==========================================
-   LOGOUT THANK-YOU SCREEN
+   3. LOGOUT THANK-YOU SCREEN
 ========================================== */
 
 function showLogoutThankYou() {
+    const logoutScreen = document.getElementById("logoutThankYou");
 
-    const thankYou = document.getElementById("logoutThankYou");
+    if (!logoutScreen) return;
 
-    if (!thankYou) return;
-
-    thankYou.classList.add("show");
+    logoutScreen.classList.add("show");
+    logoutScreen.setAttribute("aria-hidden", "false");
 }
+
+window.showLogoutThankYou = showLogoutThankYou;
 
 
 /* ==========================================
-   WELCOME SCREEN HELPER
+   4. WELCOME SCREEN
 ========================================== */
 
 function showWelcomeScreen() {
-
     const welcomeScreen = document.getElementById("welcomeScreen");
+    const welcomeVideo = document.querySelector(".welcome-video");
 
     if (!welcomeScreen) return;
 
+    welcomeScreen.style.display = "flex";
     welcomeScreen.classList.remove("closing", "launching");
-    welcomeScreen.style.display = "";
+
     welcomeScreen.classList.add("show");
+    welcomeScreen.setAttribute("aria-hidden", "false");
 
-    const video = welcomeScreen.querySelector(".welcome-video");
+    if (welcomeVideo) {
+        welcomeVideo.currentTime = 0;
 
-    if (video) {
-        video.muted = true;
-        video.play().catch(() => {});
+        const playPromise = welcomeVideo.play();
+
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Welcome video autoplay was blocked:", error);
+            });
+        }
     }
 }
 
+window.showWelcomeScreen = showWelcomeScreen;
+
 
 /* ==========================================
-   WAIT FOR FIREBASE AUTHENTICATION
+   5. WAIT FOR FIREBASE AUTHENTICATION
 ========================================== */
 
 function waitForAuthenticatedUser() {
-
     return new Promise((resolve, reject) => {
-
-        let unsubscribe = () => {};
+        let unsubscribe = null;
 
         unsubscribe = onAuthStateChanged(
             auth,
-
-            (user) => {
-
-                unsubscribe();
-
-                if (!user) {
-                    reject(
-                        new Error(
-                            "Please log in before sending a message."
-                        )
-                    );
-                    return;
+            currentUser => {
+                if (unsubscribe) {
+                    unsubscribe();
                 }
 
-                resolve(user);
+                if (currentUser) {
+                    resolve(currentUser);
+                } else {
+                    reject(
+                        new Error("Please log in before sending a message.")
+                    );
+                }
             },
+            error => {
+                if (unsubscribe) {
+                    unsubscribe();
+                }
 
-            (error) => {
-
-                unsubscribe();
                 reject(error);
-
             }
         );
-
     });
 }
 
 
 /* ==========================================
-   DOM READY
+   6. HERO VIDEO
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+    const heroVideo = document.getElementById("heroVideo");
 
+    if (heroVideo) {
+        heroVideo.muted = true;
+        heroVideo.loop = true;
+        heroVideo.playsInline = true;
 
-    /* AUTOMOTIVE BACKGROUND VIDEO */
+        const playPromise = heroVideo.play();
 
-    const video = document.getElementById("heroVideo");
-
-    if (video) {
-
-        video.muted = true;
-        video.loop = true;
-        video.autoplay = true;
-        video.playsInline = true;
-
-        video.play().catch(() => {
-            console.warn("Background video could not autoplay.");
-        });
-
-        video.addEventListener("error", () => {
-            console.error("Unable to load the background video.");
-        });
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Hero video autoplay was blocked:", error);
+            });
+        }
     }
+});
 
 
-    /* MOBILE NAVIGATION */
+/* ==========================================
+   7. MOBILE NAVIGATION
+========================================== */
 
+document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menuToggle");
     const mainNav = document.getElementById("mainNav");
 
-    if (menuToggle && mainNav) {
+    if (!menuToggle || !mainNav) return;
 
-        function closeMenu() {
+    menuToggle.addEventListener("click", () => {
+        mainNav.classList.toggle("active");
+        menuToggle.classList.toggle("active");
 
-            mainNav.classList.remove("nav-open");
+        const isOpen = mainNav.classList.contains("active");
 
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    mainNav.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            mainNav.classList.remove("active");
+            menuToggle.classList.remove("active");
             menuToggle.setAttribute("aria-expanded", "false");
-            menuToggle.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
+        });
+    });
 
-            menuToggle.textContent = "☰";
+    document.addEventListener("click", event => {
+        if (
+            !mainNav.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
+            mainNav.classList.remove("active");
+            menuToggle.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
         }
-
-        menuToggle.addEventListener("click", () => {
-
-            const isOpen = mainNav.classList.toggle("nav-open");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
-
-            menuToggle.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
-            );
-
-            menuToggle.textContent = isOpen ? "✕" : "☰";
-        });
-
-        mainNav.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", closeMenu);
-        });
-    }
+    });
+});
 
 
-    /* ANIMATED RACING LIGHT */
+/* ==========================================
+   8. RACING LIGHT ANIMATION
+========================================== */
 
-    const hero = document.querySelector(".hero");
+document.addEventListener("DOMContentLoaded", () => {
+    const racingLights = document.querySelectorAll(".racing-light");
 
-    if (hero && !hero.querySelector(".racing-light")) {
-
-        const light = document.createElement("div");
-
-        light.className = "racing-light";
-        light.setAttribute("aria-hidden", "true");
-
-        hero.appendChild(light);
-    }
+    racingLights.forEach(light => {
+        light.classList.add("active");
+    });
+});
 
 
-    /* ==========================================
-       GARAGE LIGHTBOX + CAR STATUS + SPEED CHART
-    ========================================== */
+/* ==========================================
+   9. GARAGE LIGHTBOX
+========================================== */
 
-    const lightbox = document.getElementById("carLightbox");
+document.addEventListener("DOMContentLoaded", () => {
+    const carLightbox = document.getElementById("carLightbox");
     const lightboxImage = document.getElementById("lightboxImage");
     const lightboxTitle = document.getElementById("lightboxTitle");
     const lightboxStatus = document.getElementById("lightboxStatus");
@@ -341,846 +316,589 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const garageItems = document.querySelectorAll(".garage-item");
 
-    let previousGalleryFocus = null;
+    if (!carLightbox || !garageItems.length) return;
 
-    function getStatusClass(status) {
+    function openCarLightbox(item) {
+        const carId = item.dataset.car;
+        const car = carData[carId];
 
-        if (status === "Available") return "status-ok";
-        if (status === "Reserved") return "status-warn";
+        if (!car) return;
 
-        return "status-busy";
-    }
+        const image = item.querySelector("img");
 
-    function renderStatus(car) {
-
-        if (!lightboxStatus) return;
-
-        const items = [
-            {
-                label: "Status",
-                value: car.status,
-                className: getStatusClass(car.status)
-            },
-            { label: "Engine", value: car.engine },
-            { label: "Power", value: car.power },
-            { label: "0–100 km/h", value: car.zeroToHundred },
-            { label: "Drivetrain", value: car.drivetrain },
-            { label: "Fuel", value: car.fuel },
-            { label: "Condition", value: car.condition },
-            { label: "Top Speed", value: car.topSpeed + " km/h" }
-        ];
-
-        lightboxStatus.innerHTML = "";
-
-        items.forEach(item => {
-
-            const li = document.createElement("li");
-            const label = document.createElement("span");
-
-            if (item.className) {
-                li.classList.add(item.className);
-            }
-
-            label.textContent = item.label;
-
-            li.appendChild(label);
-            li.appendChild(document.createTextNode(item.value));
-
-            lightboxStatus.appendChild(li);
-        });
-    }
-
-    function renderChart(selectedId) {
-
-        if (!speedChart) return;
-
-        const cars = Object.entries(carData);
-
-        const maxSpeed = Math.max(
-            ...cars.map(([, car]) => car.topSpeed)
-        );
-
-        speedChart.innerHTML = "";
-
-        cars.forEach(([id, car]) => {
-
-            const row = document.createElement("div");
-            row.className = "speed-row";
-
-            if (id === selectedId) {
-                row.classList.add("is-selected");
-            }
-
-            const name = document.createElement("span");
-            name.className = "speed-name";
-            name.textContent = car.name;
-
-            const track = document.createElement("div");
-            track.className = "speed-track";
-
-            const bar = document.createElement("div");
-            bar.className = "speed-bar";
-            bar.dataset.width = (car.topSpeed / maxSpeed) * 100;
-
-            const value = document.createElement("span");
-            value.className = "speed-value";
-            value.textContent = car.topSpeed + " km/h";
-
-            track.appendChild(bar);
-            row.appendChild(name);
-            row.appendChild(track);
-            row.appendChild(value);
-
-            speedChart.appendChild(row);
-        });
-
-        requestAnimationFrame(() => {
-
-            requestAnimationFrame(() => {
-
-                speedChart.querySelectorAll(".speed-bar").forEach(bar => {
-                    bar.style.width = bar.dataset.width + "%";
-                });
-
-            });
-
-        });
-    }
-
-    function openLightbox(item) {
-
-        const id = item.dataset.car;
-        const car = carData[id];
-        const img = item.querySelector("img");
-
-        if (!car || !img || !lightbox) return;
-
-        previousGalleryFocus = document.activeElement;
-
-        if (lightboxImage) {
-            lightboxImage.src = img.src;
-            lightboxImage.alt = img.alt || car.name;
+        if (lightboxImage && image) {
+            lightboxImage.src = image.src;
+            lightboxImage.alt = car.name;
         }
 
         if (lightboxTitle) {
             lightboxTitle.textContent = car.name;
         }
 
-        renderStatus(car);
-        renderChart(id);
+        if (lightboxStatus) {
+            lightboxStatus.textContent = car.status;
+            lightboxStatus.className = "lightbox-status";
 
-        lightbox.classList.add("active");
-        document.body.style.overflow = "hidden";
-
-        if (lightboxClose) lightboxClose.focus();
-    }
-
-    function closeLightbox() {
-
-        if (!lightbox) return;
-
-        lightbox.classList.remove("active");
-        document.body.style.overflow = "";
-
-        if (previousGalleryFocus) {
-            previousGalleryFocus.focus();
-        }
-    }
-
-    if (lightbox && lightboxClose && speedChart) {
-
-        garageItems.forEach(item => {
-
-            item.addEventListener("click", () => {
-                openLightbox(item);
-            });
-
-        });
-
-        lightboxClose.addEventListener("click", closeLightbox);
-
-        lightbox.addEventListener("click", event => {
-
-            if (event.target === lightbox) {
-                closeLightbox();
-            }
-
-        });
-    }
-
-
-    /* ==========================================
-       CAROUSEL
-       DOTS + ARROWS + SWIPE + MOUSE DRAG
-    ========================================== */
-
-    const track = document.getElementById("carouselTrack");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const dotsContainer = document.getElementById("carouselDots");
-
-    const slides = track
-        ? track.querySelectorAll(".carousel-slide")
-        : [];
-
-    let currentIndex = 0;
-
-    const totalSlides = slides.length;
-    const dots = [];
-
-    function updateCarouselDots() {
-
-        dots.forEach((dot, index) => {
-
-            const active = index === currentIndex;
-
-            dot.classList.toggle("active", active);
-
-            dot.setAttribute(
-                "aria-current",
-                active ? "true" : "false"
+            lightboxStatus.classList.add(
+                car.status.toLowerCase().replace(/\s+/g, "-")
             );
-
-        });
-    }
-
-    function goToSlide(index) {
-
-        if (!track || totalSlides === 0) return;
-
-        currentIndex =
-            ((index % totalSlides) + totalSlides) % totalSlides;
-
-        track.style.transform =
-            `translate3d(-${currentIndex * 100}%, 0, 0)`;
-
-        updateCarouselDots();
-    }
-
-    function nextSlide() {
-        goToSlide(currentIndex + 1);
-    }
-
-    function prevSlide() {
-        goToSlide(currentIndex - 1);
-    }
-
-    if (track && totalSlides > 0) {
-
-        if (dotsContainer) dotsContainer.innerHTML = "";
-
-        if (dotsContainer) {
-
-            slides.forEach((_, index) => {
-
-                const dot = document.createElement("button");
-
-                dot.type = "button";
-                dot.className = "carousel-dot";
-
-                dot.setAttribute(
-                    "aria-label",
-                    "Go to car " + (index + 1)
-                );
-
-                dot.addEventListener("click", () => {
-                    goToSlide(index);
-                });
-
-                dotsContainer.appendChild(dot);
-                dots.push(dot);
-            });
         }
 
-        if (nextBtn) {
-            nextBtn.addEventListener("click", nextSlide);
+        if (speedChart) {
+            speedChart.style.width = `${car.speed / 3.5}%`;
+            speedChart.setAttribute(
+                "aria-label",
+                `Top speed ${car.speed} kilometers per hour`
+            );
         }
 
-        if (prevBtn) {
-            prevBtn.addEventListener("click", prevSlide);
-        }
-
-        // Touch swipe
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        track.addEventListener("touchstart", event => {
-
-            if (event.changedTouches.length) {
-                touchStartX = event.changedTouches[0].screenX;
-            }
-
-        }, { passive: true });
-
-        track.addEventListener("touchend", event => {
-
-            if (event.changedTouches.length) {
-
-                touchEndX = event.changedTouches[0].screenX;
-
-                const diff = touchStartX - touchEndX;
-
-                if (Math.abs(diff) > 50) {
-                    diff > 0 ? nextSlide() : prevSlide();
-                }
-            }
-
-        }, { passive: true });
-
-        // Mouse drag
-
-        let isDragging = false;
-        let dragStartX = 0;
-        let dragEndX = 0;
-
-        track.addEventListener("mousedown", event => {
-
-            if (event.button !== 0) return;
-
-            isDragging = true;
-            dragStartX = event.pageX;
-            dragEndX = event.pageX;
-
-            track.style.cursor = "grabbing";
-        });
-
-        track.addEventListener("mousemove", event => {
-
-            if (isDragging) {
-                dragEndX = event.pageX;
-            }
-
-        });
-
-        function finishDrag() {
-
-            if (!isDragging) return;
-
-            isDragging = false;
-            track.style.cursor = "grab";
-
-            const diff = dragStartX - dragEndX;
-
-            if (Math.abs(diff) > 50) {
-                diff > 0 ? nextSlide() : prevSlide();
-            }
-        }
-
-        track.addEventListener("mouseup", finishDrag);
-        track.addEventListener("mouseleave", finishDrag);
-
-        track.style.cursor = "grab";
-
-        goToSlide(0);
-    }
-
-
-    /* ==========================================
-       CAR STATS MODAL + PERFORMANCE GRAPH
-    ========================================== */
-
-    const statsModal = document.getElementById("carStatsModal");
-    const statsClose = document.getElementById("closeModal");
-
-    const carCards = document.querySelectorAll(".car-card");
-    const viewBtns = document.querySelectorAll(".view-stats-btn");
-
-    const mName = document.getElementById("modalCarName");
-    const mImage = document.getElementById("modalCarImage");
-    const mHp = document.getElementById("modalHp");
-    const mSpeed = document.getElementById("modalSpeed");
-    const mTop = document.getElementById("modalTop");
-
-    const modalCarStatus = document.getElementById("modalCarStatus");
-
-    const barHp = document.getElementById("barHp");
-    const barSpeed = document.getElementById("barSpeed");
-    const barHandling = document.getElementById("barHandling");
-
-    let previousStatsFocus = null;
-    let graphTimer = null;
-
-    function setBarWidth(bar, value) {
-
-        if (!bar) return;
-
-        const number = Number(value);
-
-        const safeValue = Number.isFinite(number)
-            ? Math.max(0, Math.min(100, number))
-            : 0;
-
-        bar.style.width = safeValue + "%";
-    }
-
-    function openStats(card) {
-
-        if (!statsModal) return;
-
-        previousStatsFocus = document.activeElement;
-
-        const name = card.getAttribute("data-name") || "Unknown Car";
-        const status = card.getAttribute("data-status") || "CONCEPT";
-        const hp = card.getAttribute("data-hp") || "N/A";
-        const speed = card.getAttribute("data-speed") || "N/A";
-        const top = card.getAttribute("data-top") || "N/A";
-
-        const gHp = card.getAttribute("data-graph-hp");
-        const gSpeed = card.getAttribute("data-graph-speed");
-        const gHandling = card.getAttribute("data-graph-handling");
-
-        const image = card.querySelector("img");
-
-        if (mName) mName.textContent = name;
-        if (mHp) mHp.textContent = hp;
-        if (mSpeed) mSpeed.textContent = speed;
-        if (mTop) mTop.textContent = top;
-
-        if (modalCarStatus) {
-            modalCarStatus.textContent = status.toUpperCase();
-        }
-
-        if (mImage && image) {
-            mImage.src = image.src;
-            mImage.alt = image.alt || name;
-        }
-
-        setBarWidth(barHp, 0);
-        setBarWidth(barSpeed, 0);
-        setBarWidth(barHandling, 0);
-
-        if (graphTimer !== null) {
-            clearTimeout(graphTimer);
-        }
-
-        statsModal.classList.add("active");
-        statsModal.setAttribute("aria-hidden", "false");
+        carLightbox.classList.add("active");
+        carLightbox.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
-
-        if (statsClose) statsClose.focus();
-
-        graphTimer = window.setTimeout(() => {
-
-            setBarWidth(barHp, gHp);
-            setBarWidth(barSpeed, gSpeed);
-            setBarWidth(barHandling, gHandling);
-
-            graphTimer = null;
-
-        }, 100);
     }
 
-    function closeStats() {
-
-        if (!statsModal) return;
-
-        statsModal.classList.remove("active");
-        statsModal.setAttribute("aria-hidden", "true");
+    function closeCarLightbox() {
+        carLightbox.classList.remove("active");
+        carLightbox.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
-
-        if (graphTimer !== null) {
-            clearTimeout(graphTimer);
-            graphTimer = null;
-        }
-
-        if (
-            previousStatsFocus &&
-            typeof previousStatsFocus.focus === "function"
-        ) {
-            previousStatsFocus.focus();
-        }
     }
 
-    if (statsModal && carCards.length > 0) {
-
-        carCards.forEach(card => {
-
-            card.addEventListener("click", event => {
-
-                if (event.target.closest(".view-stats-btn")) return;
-
-                openStats(card);
-            });
-
+    garageItems.forEach(item => {
+        item.addEventListener("click", () => {
+            openCarLightbox(item);
         });
-
-        viewBtns.forEach(button => {
-
-            button.addEventListener("click", event => {
-
-                event.stopPropagation();
-
-                const card = button.closest(".car-card");
-
-                if (card) openStats(card);
-            });
-
-        });
-
-        if (statsClose) {
-            statsClose.addEventListener("click", closeStats);
-        }
-
-        statsModal.addEventListener("click", event => {
-
-            if (event.target === statsModal) {
-                closeStats();
-            }
-
-        });
-    }
-
-
-    /* ==========================================
-       KEYBOARD CONTROLS
-    ========================================== */
-
-    document.addEventListener("keydown", event => {
-
-        if (
-            event.key === "Escape" &&
-            lightbox &&
-            lightbox.classList.contains("active")
-        ) {
-            closeLightbox();
-            return;
-        }
-
-        if (
-            event.key === "Escape" &&
-            statsModal &&
-            statsModal.classList.contains("active")
-        ) {
-            closeStats();
-            return;
-        }
-
-        if (
-            event.key === "Escape" &&
-            mainNav &&
-            mainNav.classList.contains("nav-open")
-        ) {
-
-            mainNav.classList.remove("nav-open");
-
-            if (menuToggle) {
-
-                menuToggle.setAttribute("aria-expanded", "false");
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
-
-                menuToggle.textContent = "☰";
-            }
-        }
-
-        if (
-            event.target instanceof HTMLElement &&
-            (
-                event.target.matches("input, textarea, select") ||
-                event.target.isContentEditable
-            )
-        ) return;
-
-        const modalIsOpen =
-            (lightbox && lightbox.classList.contains("active")) ||
-            (statsModal && statsModal.classList.contains("active"));
-
-        if (modalIsOpen) return;
-
-        if (event.key === "ArrowRight" && totalSlides > 0) {
-            nextSlide();
-        }
-
-        if (event.key === "ArrowLeft" && totalSlides > 0) {
-            prevSlide();
-        }
-
     });
 
-
-    /* ==========================================
-       WELCOME SCREEN ENGINE ANIMATION
-    ========================================== */
-
-    const welcomeScreen = document.getElementById("welcomeScreen");
-    const enterButton = document.getElementById("enterWebsite");
-
-    if (welcomeScreen && enterButton) {
-
-        const welcomeVideo =
-            welcomeScreen.querySelector(".welcome-video");
-
-        const enterLabel =
-            enterButton.querySelector(".enter-label");
-
-        let isEntering = false;
-
-        try {
-
-            if (
-                sessionStorage.getItem("showWelcomeScreen") === "true"
-            ) {
-
-                sessionStorage.removeItem("showWelcomeScreen");
-                showWelcomeScreen();
-            }
-
-        } catch (error) {
-            // Continue if session storage is unavailable.
-        }
-
-        enterButton.addEventListener("click", () => {
-
-            if (isEntering) return;
-
-            isEntering = true;
-
-            welcomeScreen.classList.remove("closing");
-            welcomeScreen.classList.add("launching");
-
-            enterButton.setAttribute(
-                "aria-label",
-                "Starting engine"
-            );
-
-            if (enterLabel) {
-                enterLabel.textContent = "STARTING ENGINE...";
-            }
-
-            window.setTimeout(() => {
-
-                welcomeScreen.classList.remove("launching");
-                welcomeScreen.classList.add("closing");
-
-                if (welcomeVideo) welcomeVideo.pause();
-
-                window.setTimeout(() => {
-
-                    welcomeScreen.classList.remove(
-                        "show",
-                        "closing"
-                    );
-
-                    welcomeScreen.style.display = "none";
-
-                    enterButton.removeAttribute("aria-label");
-
-                    if (enterLabel) {
-                        enterLabel.textContent = "START YOUR DRIVE";
-                    }
-
-                    isEntering = false;
-
-                }, 700);
-
-            }, 1100);
-
-        });
+    if (lightboxClose) {
+        lightboxClose.addEventListener("click", closeCarLightbox);
     }
 
+    carLightbox.addEventListener("click", event => {
+        if (event.target === carLightbox) {
+            closeCarLightbox();
+        }
+    });
+
+    window.closeCarLightbox = closeCarLightbox;
 });
 
 
 /* ==========================================
-   CONTACT FORM + FIRESTORE DATABASE
-   AUTHENTICATED USER VERSION
+   10. CAROUSEL
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+    const carouselTrack = document.getElementById("carouselTrack");
+    const slides = document.querySelectorAll(".carousel-slide");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsContainer = document.getElementById("carouselDots");
 
+    if (!carouselTrack || !slides.length) return;
+
+    let currentIndex = 0;
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    const totalSlides = slides.length;
+
+    function updateCarousel() {
+        carouselTrack.style.transform =
+            `translateX(-${currentIndex * 100}%)`;
+
+        if (dotsContainer) {
+            const dots = dotsContainer.querySelectorAll("button");
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle(
+                    "active",
+                    index === currentIndex
+                );
+
+                dot.setAttribute(
+                    "aria-current",
+                    index === currentIndex ? "true" : "false"
+                );
+            });
+        }
+    }
+
+    function goToNext() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+    }
+
+    function goToPrevious() {
+        currentIndex =
+            (currentIndex - 1 + totalSlides) % totalSlides;
+
+        updateCarousel();
+    }
+
+    if (dotsContainer) {
+        dotsContainer.innerHTML = "";
+
+        slides.forEach((slide, index) => {
+            const dot = document.createElement("button");
+
+            dot.type = "button";
+            dot.className = "carousel-dot";
+            dot.setAttribute(
+                "aria-label",
+                `Go to slide ${index + 1}`
+            );
+
+            dot.addEventListener("click", () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener("click", goToNext);
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener("click", goToPrevious);
+    }
+
+    /* Touch swipe */
+    carouselTrack.addEventListener("touchstart", event => {
+        startX = event.touches[0].clientX;
+    }, { passive: true });
+
+    carouselTrack.addEventListener("touchend", event => {
+        currentX = event.changedTouches[0].clientX;
+
+        const difference = startX - currentX;
+
+        if (Math.abs(difference) > 50) {
+            difference > 0 ? goToNext() : goToPrevious();
+        }
+    });
+
+    /* Mouse drag */
+    carouselTrack.addEventListener("mousedown", event => {
+        isDragging = true;
+        startX = event.clientX;
+        carouselTrack.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mouseup", event => {
+        if (!isDragging) return;
+
+        currentX = event.clientX;
+
+        const difference = startX - currentX;
+
+        if (Math.abs(difference) > 50) {
+            difference > 0 ? goToNext() : goToPrevious();
+        }
+
+        isDragging = false;
+        carouselTrack.style.cursor = "";
+    });
+
+    updateCarousel();
+
+    window.goToNextSlide = goToNext;
+    window.goToPreviousSlide = goToPrevious;
+});
+
+
+/* ==========================================
+   11. CAR STATS MODAL
+========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const carStatsModal = document.getElementById("carStatsModal");
+    const closeModal = document.getElementById("closeModal");
+
+    const carCards = document.querySelectorAll(".car-card");
+    const viewStatsButtons = document.querySelectorAll(".view-stats-btn");
+
+    if (!carStatsModal) return;
+
+    const modalTitle = document.getElementById("modalCarName");
+    const modalStatus = document.getElementById("modalCarStatus");
+    const modalEngine = document.getElementById("modalEngine");
+    const modalPower = document.getElementById("modalPower");
+    const modalAcceleration = document.getElementById("modalAcceleration");
+    const modalDrivetrain = document.getElementById("modalDrivetrain");
+    const modalCondition = document.getElementById("modalCondition");
+    const modalConditionText = document.getElementById("modalConditionText");
+    const graphBars = document.querySelectorAll(".graph-bar");
+
+    function openStatsModal(carId) {
+        const car = carData[carId];
+
+        if (!car) return;
+
+        if (modalTitle) modalTitle.textContent = car.name;
+        if (modalStatus) modalStatus.textContent = car.status;
+        if (modalEngine) modalEngine.textContent = car.engine;
+        if (modalPower) modalPower.textContent = car.power;
+
+        if (modalAcceleration) {
+            modalAcceleration.textContent = car.zeroToHundred;
+        }
+
+        if (modalDrivetrain) {
+            modalDrivetrain.textContent = car.drivetrain;
+        }
+
+        if (modalCondition) {
+            modalCondition.textContent = car.condition;
+        }
+
+        if (modalConditionText) {
+            modalConditionText.textContent = car.conditionText;
+        }
+
+        const graphValues = [
+            Number.parseInt(car.speed, 10),
+            Number.parseInt(car.power, 10),
+            Number.parseInt(car.condition, 10),
+            100 - Number.parseInt(car.zeroToHundred, 10) * 10
+        ];
+
+        graphBars.forEach((bar, index) => {
+            const value = graphValues[index] || 0;
+
+            bar.style.height = "0%";
+
+            requestAnimationFrame(() => {
+                bar.style.height = `${Math.min(value / 7, 100)}%`;
+            });
+        });
+
+        carStatsModal.classList.add("active");
+        carStatsModal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeStatsModal() {
+        carStatsModal.classList.remove("active");
+        carStatsModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    carCards.forEach(card => {
+        card.addEventListener("click", event => {
+            if (event.target.closest(".view-stats-btn")) return;
+
+            const carId = card.dataset.car;
+            openStatsModal(carId);
+        });
+    });
+
+    viewStatsButtons.forEach(button => {
+        button.addEventListener("click", event => {
+            event.stopPropagation();
+
+            const carCard = button.closest(".car-card");
+
+            if (carCard) {
+                openStatsModal(carCard.dataset.car);
+            }
+        });
+    });
+
+    if (closeModal) {
+        closeModal.addEventListener("click", closeStatsModal);
+    }
+
+    carStatsModal.addEventListener("click", event => {
+        if (event.target === carStatsModal) {
+            closeStatsModal();
+        }
+    });
+
+    window.closeStatsModal = closeStatsModal;
+});
+
+
+/* ==========================================
+   12. KEYBOARD CONTROLS
+========================================== */
+
+document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+
+    const carLightbox = document.getElementById("carLightbox");
+    const carStatsModal = document.getElementById("carStatsModal");
+    const mainNav = document.getElementById("mainNav");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (carLightbox && carLightbox.classList.contains("active")) {
+        carLightbox.classList.remove("active");
+        carLightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    if (carStatsModal && carStatsModal.classList.contains("active")) {
+        carStatsModal.classList.remove("active");
+        carStatsModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    if (mainNav) {
+        mainNav.classList.remove("active");
+    }
+
+    if (menuToggle) {
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+    }
+});
+
+
+/* ==========================================
+   13. WELCOME SCREEN ANIMATION
+========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const enterButton = document.getElementById("enterWebsite");
+    const welcomeVideo = document.querySelector(".welcome-video");
+
+    if (!welcomeScreen) return;
+
+    const shouldShowWelcome =
+        sessionStorage.getItem("showWelcomeScreen") === "true";
+
+    if (shouldShowWelcome) {
+        sessionStorage.removeItem("showWelcomeScreen");
+        showWelcomeScreen();
+    }
+
+    if (!enterButton) return;
+
+    enterButton.addEventListener("click", () => {
+        if (
+            !welcomeScreen.classList.contains("show") &&
+            welcomeScreen.style.display === "none"
+        ) {
+            return;
+        }
+
+        welcomeScreen.classList.add("launching");
+
+        enterButton.disabled = true;
+
+        setTimeout(() => {
+            welcomeScreen.classList.add("closing");
+
+            if (welcomeVideo) {
+                welcomeVideo.pause();
+            }
+
+            setTimeout(() => {
+                welcomeScreen.classList.remove(
+                    "show",
+                    "launching",
+                    "closing"
+                );
+
+                welcomeScreen.style.display = "none";
+                welcomeScreen.setAttribute("aria-hidden", "true");
+
+                document.body.style.overflow = "";
+
+                enterButton.disabled = false;
+            }, 800);
+
+        }, 500);
+    });
+});
+
+
+/* ==========================================
+   14. FIREBASE CONTACT FORM
+========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
     const contactForm = document.getElementById("contactForm");
     const contactMessage = document.getElementById("contactMessage");
 
-    if (!contactForm || !contactMessage) return;
+    if (!contactForm) return;
 
-    const submitButton =
-        contactForm.querySelector('[type="submit"]');
-
-    contactForm.addEventListener("submit", async (event) => {
-
+    contactForm.addEventListener("submit", async event => {
         event.preventDefault();
 
-        if (!contactForm.checkValidity()) {
-            contactForm.reportValidity();
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const subjectInput = document.getElementById("subject");
+        const messageInput = document.getElementById("message");
+
+        if (
+            !nameInput ||
+            !emailInput ||
+            !subjectInput ||
+            !messageInput
+        ) {
+            console.error("Contact form fields are missing.");
             return;
         }
 
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const subject = subjectInput.value.trim();
+        const message = messageInput.value.trim();
 
-        /* GET FORM VALUES */
+        function showContactMessage(text, type) {
+            if (!contactMessage) return;
 
-        const name =
-            document.getElementById("name")?.value.trim() || "";
+            contactMessage.textContent = text;
+            contactMessage.className = `contact-message ${type}`;
+        }
 
-        const email =
-            document.getElementById("email")?.value.trim() || "";
-
-        const subject =
-            document.getElementById("subject")?.value.trim() || "";
-
-        const message =
-            document.getElementById("message")?.value.trim() || "";
-
-
-        /* INPUT VALIDATION */
-
+        /* Validate required fields */
         if (!name || !email || !subject || !message) {
-
-            contactMessage.textContent =
-                "Please complete all fields.";
-
-            contactMessage.style.color = "#ff7777";
-
+            showContactMessage(
+                "PLEASE COMPLETE ALL FIELDS.",
+                "error"
+            );
             return;
         }
 
-        if (name.length < 2 || name.length > 100) {
-
-            contactMessage.textContent =
-                "Name must contain 2 to 100 characters.";
-
-            contactMessage.style.color = "#ff7777";
-
+        if (name.length < 2) {
+            showContactMessage(
+                "PLEASE ENTER A VALID NAME.",
+                "error"
+            );
             return;
         }
 
-        if (email.length > 254) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            contactMessage.textContent =
-                "Your email address is too long.";
-
-            contactMessage.style.color = "#ff7777";
-
+        if (!emailPattern.test(email)) {
+            showContactMessage(
+                "PLEASE ENTER A VALID EMAIL ADDRESS.",
+                "error"
+            );
             return;
         }
 
-        if (subject.length < 3 || subject.length > 100) {
-
-            contactMessage.textContent =
-                "Subject must contain 3 to 100 characters.";
-
-            contactMessage.style.color = "#ff7777";
-
+        if (message.length < 10) {
+            showContactMessage(
+                "YOUR MESSAGE MUST CONTAIN AT LEAST 10 CHARACTERS.",
+                "error"
+            );
             return;
         }
 
-        if (message.length < 10 || message.length > 2000) {
+        const submitButton = contactForm.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
 
-            contactMessage.textContent =
-                "Message must contain 10 to 2000 characters.";
-
-            contactMessage.style.color = "#ff7777";
-
-            return;
-        }
-
-
-        /* DISABLE SUBMIT BUTTON */
-
-        if (submitButton) {
-
-            submitButton.disabled = true;
-            submitButton.textContent = "SENDING MESSAGE...";
-
-        }
-
-        contactMessage.textContent =
-            "Checking your account...";
-
-        contactMessage.style.color = "#00eaff";
-
+        const originalButtonText = submitButton
+            ? submitButton.textContent
+            : "";
 
         try {
+            if (submitButton) {
+                submitButton.disabled = true;
 
-            /* WAIT FOR FIREBASE AUTHENTICATION */
-
-            const currentUser = await waitForAuthenticatedUser();
-
-            if (!currentUser || !currentUser.uid) {
-
-                throw new Error(
-                    "Your account could not be verified. Please log in again."
-                );
-
+                if (submitButton.tagName === "BUTTON") {
+                    submitButton.textContent = "SENDING...";
+                } else {
+                    submitButton.value = "SENDING...";
+                }
             }
 
+            showContactMessage(
+                "CONNECTING TO FIREBASE...",
+                "loading"
+            );
 
-            /* SAVE MESSAGE TO FIRESTORE */
+            /* Make sure the visitor is logged in */
+            const currentUser = await waitForAuthenticatedUser();
 
-            contactMessage.textContent =
-                "Sending your message...";
-
+            /* Save the message to Firestore */
             await addDoc(collection(db, "messages"), {
-
                 userId: currentUser.uid,
-
                 name: name,
                 email: email,
                 subject: subject,
                 message: message,
-
                 status: "unread",
-
                 createdAt: serverTimestamp()
-
             });
 
-
-            /* SUCCESS MESSAGE */
-
-            contactMessage.textContent =
-                "MESSAGE SENT SUCCESSFULLY! Thank you for contacting ALFRED.";
-
-            contactMessage.style.color = "#55dd88";
+            showContactMessage(
+                "MESSAGE SENT SUCCESSFULLY! THANK YOU.",
+                "success"
+            );
 
             contactForm.reset();
 
-            console.log(
-                "ALFRED: Contact message successfully saved.",
-                currentUser.uid
-            );
-
-
         } catch (error) {
+            console.error("CONTACT FORM ERROR:", error);
 
-            /* ERROR HANDLING */
-
-            console.error(
-                "ALFRED Contact Form Error:",
-                error
-            );
+            let errorText =
+                "FAILED TO SEND MESSAGE. PLEASE TRY AGAIN.";
 
             if (error.code === "permission-denied") {
-
-                contactMessage.textContent =
-                    "Permission denied. Please check your Firestore security rules.";
-
-            } else {
-
-                contactMessage.textContent =
-                    "FAILED TO SEND: " + error.message;
-
+                errorText =
+                    "FIRESTORE PERMISSION DENIED. CHECK YOUR FIRESTORE RULES.";
+            } else if (
+                error.message &&
+                error.message.includes("Please log in")
+            ) {
+                errorText =
+                    "PLEASE LOG IN BEFORE SENDING A MESSAGE.";
+            } else if (error.code === "unavailable") {
+                errorText =
+                    "DATABASE UNAVAILABLE. CHECK YOUR INTERNET CONNECTION.";
             }
 
-            contactMessage.style.color = "#ff7777";
-
+            showContactMessage(errorText, "error");
 
         } finally {
-
-            /* RESTORE BUTTON */
-
             if (submitButton) {
-
                 submitButton.disabled = false;
-                submitButton.textContent = "SEND MESSAGE";
 
+                if (submitButton.tagName === "BUTTON") {
+                    submitButton.textContent =
+                        originalButtonText || "SEND MESSAGE";
+                } else {
+                    submitButton.value =
+                        originalButtonText || "SEND MESSAGE";
+                }
             }
-
         }
-
     });
-
 });
+
+
+/* ==========================================
+   15. CONTACT FORM VALIDATION FUNCTION
+========================================== */
+
+function validateContact(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    const contactForm = document.getElementById("contactForm");
+
+    if (contactForm) {
+        contactForm.requestSubmit();
+    }
+}
+
+window.validateContact = validateContact;
+
+
+/* ==========================================
+   16. INITIALIZATION COMPLETE
+========================================== */
+
+console.log("ALFRED AUTOMOTIVE JAVASCRIPT LOADED");
+console.log("Firebase contact form connected.");
+console.log("Garage, carousel, welcome screen and animations initialized.");
