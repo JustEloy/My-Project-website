@@ -2,7 +2,21 @@
 /* ==========================================
    ALFRED AUTOMOTIVE
    COMPLETE COMBINED MAIN JAVASCRIPT
+   FIREBASE CONTACT FORM INTEGRATED
 ========================================== */
+
+
+/* ==========================================
+   FIREBASE IMPORTS
+========================================== */
+
+import { db, auth } from "./firebase-config.js";
+
+import {
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
 /* ==========================================
@@ -84,6 +98,7 @@ const carData = {
 ========================================== */
 
 function showAuthForm(type) {
+
     const login = document.getElementById("loginForm");
     const signup = document.getElementById("signupForm");
     const message = document.getElementById("authMessage");
@@ -100,6 +115,7 @@ function showAuthForm(type) {
 /* DEMO LOGIN */
 
 function demoLogin(event) {
+
     if (event) event.preventDefault();
 
     const form = document.getElementById("loginForm");
@@ -117,6 +133,7 @@ function demoLogin(event) {
 /* DEMO SIGN-UP */
 
 function demoSignup(event) {
+
     if (event) event.preventDefault();
 
     const password = document.getElementById("signupPassword");
@@ -146,6 +163,7 @@ function demoSignup(event) {
 ========================================== */
 
 function showLogoutThankYou() {
+
     const thankYou = document.getElementById("logoutThankYou");
 
     if (!thankYou) return;
@@ -159,6 +177,7 @@ function showLogoutThankYou() {
 ========================================== */
 
 function showWelcomeScreen() {
+
     const welcomeScreen = document.getElementById("welcomeScreen");
 
     if (!welcomeScreen) return;
@@ -182,11 +201,13 @@ function showWelcomeScreen() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+
     /* AUTOMOTIVE BACKGROUND VIDEO */
 
     const video = document.getElementById("heroVideo");
 
     if (video) {
+
         video.muted = true;
         video.loop = true;
         video.autoplay = true;
@@ -210,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (menuToggle && mainNav) {
 
         function closeMenu() {
+
             mainNav.classList.remove("nav-open");
 
             menuToggle.setAttribute("aria-expanded", "false");
@@ -222,6 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         menuToggle.addEventListener("click", () => {
+
             const isOpen = mainNav.classList.toggle("nav-open");
 
             menuToggle.setAttribute(
@@ -250,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hero = document.querySelector(".hero");
 
     if (hero && !hero.querySelector(".racing-light")) {
+
         const light = document.createElement("div");
 
         light.className = "racing-light";
@@ -275,12 +299,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let previousGalleryFocus = null;
 
     function getStatusClass(status) {
+
         if (status === "Available") return "status-ok";
         if (status === "Reserved") return "status-warn";
+
         return "status-busy";
     }
 
     function renderStatus(car) {
+
         if (!lightboxStatus) return;
 
         const items = [
@@ -301,6 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lightboxStatus.innerHTML = "";
 
         items.forEach(item => {
+
             const li = document.createElement("li");
             const label = document.createElement("span");
 
@@ -318,6 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderChart(selectedId) {
+
         if (!speedChart) return;
 
         const cars = Object.entries(carData);
@@ -329,6 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speedChart.innerHTML = "";
 
         cars.forEach(([id, car]) => {
+
             const row = document.createElement("div");
             row.className = "speed-row";
 
@@ -360,15 +390,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         requestAnimationFrame(() => {
+
             requestAnimationFrame(() => {
+
                 speedChart.querySelectorAll(".speed-bar").forEach(bar => {
                     bar.style.width = bar.dataset.width + "%";
                 });
+
             });
+
         });
     }
 
     function openLightbox(item) {
+
         const id = item.dataset.car;
         const car = carData[id];
         const img = item.querySelector("img");
@@ -396,6 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function closeLightbox() {
+
         if (!lightbox) return;
 
         lightbox.classList.remove("active");
@@ -409,17 +445,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lightbox && lightboxClose && speedChart) {
 
         garageItems.forEach(item => {
+
             item.addEventListener("click", () => {
                 openLightbox(item);
             });
+
         });
 
         lightboxClose.addEventListener("click", closeLightbox);
 
         lightbox.addEventListener("click", event => {
+
             if (event.target === lightbox) {
                 closeLightbox();
             }
+
         });
     }
 
@@ -439,22 +479,28 @@ document.addEventListener("DOMContentLoaded", () => {
         : [];
 
     let currentIndex = 0;
+
     const totalSlides = slides.length;
     const dots = [];
 
     function updateCarouselDots() {
+
         dots.forEach((dot, index) => {
+
             const active = index === currentIndex;
 
             dot.classList.toggle("active", active);
+
             dot.setAttribute(
                 "aria-current",
                 active ? "true" : "false"
             );
+
         });
     }
 
     function goToSlide(index) {
+
         if (!track || totalSlides === 0) return;
 
         currentIndex =
@@ -479,11 +525,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dotsContainer) dotsContainer.innerHTML = "";
 
         if (dotsContainer) {
+
             slides.forEach((_, index) => {
+
                 const dot = document.createElement("button");
 
                 dot.type = "button";
                 dot.className = "carousel-dot";
+
                 dot.setAttribute(
                     "aria-label",
                     "Go to car " + (index + 1)
@@ -507,17 +556,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Touch swipe
+
         let touchStartX = 0;
         let touchEndX = 0;
 
         track.addEventListener("touchstart", event => {
+
             if (event.changedTouches.length) {
                 touchStartX = event.changedTouches[0].screenX;
             }
+
         }, { passive: true });
 
         track.addEventListener("touchend", event => {
+
             if (event.changedTouches.length) {
+
                 touchEndX = event.changedTouches[0].screenX;
 
                 const diff = touchStartX - touchEndX;
@@ -526,14 +580,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     diff > 0 ? nextSlide() : prevSlide();
                 }
             }
+
         }, { passive: true });
 
         // Mouse drag
+
         let isDragging = false;
         let dragStartX = 0;
         let dragEndX = 0;
 
         track.addEventListener("mousedown", event => {
+
             if (event.button !== 0) return;
 
             isDragging = true;
@@ -544,10 +601,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         track.addEventListener("mousemove", event => {
-            if (isDragging) dragEndX = event.pageX;
+
+            if (isDragging) {
+                dragEndX = event.pageX;
+            }
+
         });
 
         function finishDrag() {
+
             if (!isDragging) return;
 
             isDragging = false;
@@ -595,6 +657,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let graphTimer = null;
 
     function setBarWidth(bar, value) {
+
         if (!bar) return;
 
         const number = Number(value);
@@ -607,6 +670,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function openStats(card) {
+
         if (!statsModal) return;
 
         previousStatsFocus = document.activeElement;
@@ -652,15 +716,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (statsClose) statsClose.focus();
 
         graphTimer = window.setTimeout(() => {
+
             setBarWidth(barHp, gHp);
             setBarWidth(barSpeed, gSpeed);
             setBarWidth(barHandling, gHandling);
 
             graphTimer = null;
+
         }, 100);
     }
 
     function closeStats() {
+
         if (!statsModal) return;
 
         statsModal.classList.remove("active");
@@ -683,21 +750,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (statsModal && carCards.length > 0) {
 
         carCards.forEach(card => {
+
             card.addEventListener("click", event => {
+
                 if (event.target.closest(".view-stats-btn")) return;
 
                 openStats(card);
             });
+
         });
 
         viewBtns.forEach(button => {
+
             button.addEventListener("click", event => {
+
                 event.stopPropagation();
 
                 const card = button.closest(".car-card");
 
                 if (card) openStats(card);
             });
+
         });
 
         if (statsClose) {
@@ -705,9 +778,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         statsModal.addEventListener("click", event => {
+
             if (event.target === statsModal) {
                 closeStats();
             }
+
         });
     }
 
@@ -741,14 +816,18 @@ document.addEventListener("DOMContentLoaded", () => {
             mainNav &&
             mainNav.classList.contains("nav-open")
         ) {
+
             mainNav.classList.remove("nav-open");
 
             if (menuToggle) {
+
                 menuToggle.setAttribute("aria-expanded", "false");
+
                 menuToggle.setAttribute(
                     "aria-label",
                     "Open navigation menu"
                 );
+
                 menuToggle.textContent = "☰";
             }
         }
@@ -774,6 +853,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.key === "ArrowLeft" && totalSlides > 0) {
             prevSlide();
         }
+
     });
 
 
@@ -795,17 +875,21 @@ document.addEventListener("DOMContentLoaded", () => {
         let isEntering = false;
 
         try {
+
             if (
                 sessionStorage.getItem("showWelcomeScreen") === "true"
             ) {
+
                 sessionStorage.removeItem("showWelcomeScreen");
                 showWelcomeScreen();
             }
+
         } catch (error) {
             // Continue if session storage is unavailable.
         }
 
         enterButton.addEventListener("click", () => {
+
             if (isEntering) return;
 
             isEntering = true;
@@ -823,12 +907,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             window.setTimeout(() => {
+
                 welcomeScreen.classList.remove("launching");
                 welcomeScreen.classList.add("closing");
 
                 if (welcomeVideo) welcomeVideo.pause();
 
                 window.setTimeout(() => {
+
                     welcomeScreen.classList.remove(
                         "show",
                         "closing"
@@ -843,8 +929,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     isEntering = false;
+
                 }, 700);
+
             }, 1100);
+
         });
     }
 
@@ -879,8 +968,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const message = document.getElementById("message").value.trim();
 
         if (!name || !email || !subject || !message) {
-            contactMessage.textContent = "Please complete all fields.";
+
+            contactMessage.textContent =
+                "Please complete all fields.";
+
             contactMessage.style.color = "#ff7777";
+
             return;
         }
 
@@ -894,26 +987,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            // Import Firebase database
-            const { db } = await import("./firebase-config.js");
+            // Get the currently logged-in Firebase user
+            const currentUser = auth.currentUser;
 
-            // Import Firestore functions
-            const {
-                collection,
-                addDoc,
-                serverTimestamp
-            } = await import(
-                "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js"
-            );
-
-            // Save contact message
+            // Save the message to Firestore
             await addDoc(collection(db, "messages"), {
+
+                userId: currentUser ? currentUser.uid : null,
+
                 name: name,
                 email: email,
                 subject: subject,
                 message: message,
+
                 status: "unread",
+
                 createdAt: serverTimestamp()
+
             });
 
             contactMessage.textContent =
@@ -927,13 +1017,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.error("Contact form error:", error);
 
-            if (error.code === "permission-denied") {
-                contactMessage.textContent =
-                    "Permission denied. Please check your Firestore security rules.";
-            } else {
-                contactMessage.textContent =
-                    "Unable to send your message. Please try again.";
-            }
+            contactMessage.textContent =
+                "FAILED TO SEND: " + error.message;
 
             contactMessage.style.color = "#ff7777";
 
@@ -943,6 +1028,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitButton.disabled = false;
                 submitButton.textContent = "SEND MESSAGE";
             }
+
         }
+
     });
+
 });
